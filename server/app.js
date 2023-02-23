@@ -1,5 +1,5 @@
 const express = require('express')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose') // для подключенния удаллено к MongoDB 
 const config = require('config')
 const chalk = require('chalk')
 
@@ -16,6 +16,17 @@ const PORT = config.get('port') ?? 8080
 //     console.log(chalk.bgMagentaBright('Development'))
 // }
 
-app.listen(PORT, () => 
-    console.log(chalk.green(`Server has started on port ${PORT}...`))
-)
+async function start() {
+    try {
+        await mongoose.connect(config.get('mongoUrl'))
+        app.listen(PORT, () => 
+        console.log(chalk.green(`Server has started on port ${PORT}...`))
+    ) 
+    } catch (e) {
+        console.log(chalk.red(e.message))
+        process.exit(1)
+    }
+}
+
+start()
+
