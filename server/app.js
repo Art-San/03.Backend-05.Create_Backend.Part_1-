@@ -7,6 +7,12 @@ const app = express()
 
 const PORT = config.get('port') ?? 8080
 
+// if (process.env.NODE_ENV === 'production') {
+//     console.log(chalk.bgBlueBright('Production'))
+// } else {
+//     console.log(chalk.bgMagentaBright('Development'))
+// }
+
 app.listen(PORT, () => 
     console.log(chalk.green(`Server has started on port ${PORT}...`))
 )
