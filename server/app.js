@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose') // для подключенния удаллено к MongoDB 
 const config = require('config')
 const chalk = require('chalk')
+const initDatabase = require('./start/initDatabase')
 
 const app = express()
 
@@ -18,6 +19,9 @@ const PORT = config.get('port') ?? 8080
 
 async function start() {
     try {
+        mongoose.connection.once('open', () => {  //обращаемся к соединнению с БД (моногоДБ) единожды (once) 
+            initDatabase()
+        })
         await mongoose.connect(config.get('mongoUrl'))
         console.log(chalk.cyanBright('MongoDB connected'))
         app.listen(PORT, () => 
